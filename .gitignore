@@ -1,0 +1,12 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# VS Code settings (optional but recommended)
+.vscode/
+
+# OS junk files (Windows/macOS)
+.DS_Store
+Thumbs.db
+
+Nilfol
