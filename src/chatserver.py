@@ -1,35 +1,37 @@
 import socket
+import threading
 from datetime import datetime
 
 def localtime():
     now = datetime.now()
-    return now.strftime("%H:%M:%S")
+    return now.strftime("%H:%M")
 
+def accept_connections(s):
+    clients = []
+    while True:
+        c, addr = s.accept()
+        sender = c.recv(1024).decode()
+        print("connected with", addr, sender)
+        client_r = threading.Thread(target = receive_from_client, args=(c, sender,clients))
+        clients.append(c)
+        client_r.start()
 
+def receive_from_client(c, sender,clients):
+    while True:
+        msg = c.recv(1024).decode()
+        print(f"[{localtime()}] {sender}: {msg}")
+        if msg.lower() == "bye" :
+            print("closing connection")
+            c.close()
+            break
+        for client in clients:
+            if client!=c:
+                client.send(bytes(f"[{localtime()}] {sender}: {msg}", 'utf-8'))
 
-s = socket.socket()
-
-s.bind(('localhost',9999))         ##replace the IP address(localhost) with 0.0.0.0 if you want to accept connections from any machine in the same network
-
-s.listen(2)
-print("waiting for connections")
-
-c1, addr1 = s.accept()
-sender1 = c1.recv(1024).decode()
-print("connected with", addr1, sender1)
-c2, addr2 = s.accept()
-sender2 = c2.recv(1024).decode()
-print("connected with", addr2, sender2)
-
-while True:
-    msg1 = c1.recv(1024).decode()
-    print(f"[{localtime()}] {sender1}: {msg1}")
-    c2.send(bytes(f"[{localtime()}] {sender1}: {msg1}",'utf-8'))
-    msg2 = c2.recv(1024).decode()
-    print(f"[{localtime()}] {sender2}: {msg2}")
-    c1.send(bytes(f"[{localtime()}] {sender2}: {msg2}",'utf-8'))
-    if msg1.lower() == "bye" or msg2.lower() == "bye":
-        print("closing connection")
-        c1.close()
-        c2.close()
-        break
+def main():
+    s = socket.socket()
+    s.bind(('localhost',9999))
+    s.listen(2)
+    print("waiting for connections")
+    accept_connections(s)
+main()
