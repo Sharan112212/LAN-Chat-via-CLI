@@ -1,56 +1,62 @@
-# Python Socket Chat Application
+# LAN Chat via CLI
 
-A simple terminal-based chat application built using Python sockets.
+A multi-client LAN chat application built using Python sockets and threading.
 
-This project demonstrates basic client-server communication using TCP sockets where two clients can exchange messages through a central server.
+This project allows multiple clients connected to the same network to communicate with each other through a central server using a command-line interface.
 
 ---
 
 ## Features
 
-* Two-client communication
-* Server-side message forwarding
-* Username support
-* LAN-based communication
-* Terminal chat interface
-* Basic connection closing using `bye`
+- Multi-client chat system
+- Real-time message broadcasting
+- Threaded client handling
+- Timestamped messages
+- LAN-based communication using TCP sockets
+- Separate send and receive threads on client side
 
 ---
 
 ## Technologies Used
 
-* Python
-* Socket Programming
-* TCP/IP Networking
+- Python
+- Socket Programming
+- Multithreading (`threading` module)
+- TCP/IP Networking
 
 ---
 
 ## Project Structure
 
-```text
-server.py
-client1.py
-client2.py
+```bash
+LANChat/
+│
+├── server.py
+├── client.py
+├── .gitignore
+└── README.md
 ```
 
 ---
 
 ## How It Works
 
-1. The server waits for two client connections.
-2. Client 1 sends a message.
-3. The server forwards the message to Client 2.
-4. Client 2 replies.
-5. The server forwards the reply back to Client 1.
-6. The process continues until a user sends:
+### Server
+- Creates a TCP socket
+- Accepts incoming client connections
+- Stores connected clients
+- Creates a dedicated thread for each client
+- Broadcasts received messages to other connected clients
 
-```text
-bye
-```
+### Client
+- Connects to the server
+- Uses one thread for sending messages
+- Uses another thread for receiving messages
+- Supports real-time communication
 
 ---
 
-## How to Run
+## Running the Project
 
 ### Start the Server
 
@@ -58,42 +64,59 @@ bye
 py server.py
 ```
 
-### Start Client 1
+### Start the Client
 
 ```bash
-py client1.py
+py client.py
 ```
 
-### Start Client 2
+> Replace `localhost` with the server machine's IP address when using different systems on the same LAN.
 
-```bash
-py client2.py
+---
+
+## Example
+
+```text
+[23:45] Manoj: Hello
+[23:46] Sharan: Hi!
 ```
 
 ---
 
-## Important Notes
+## Current Limitations
 
-* All systems should be connected to the same network/hotspot for LAN communication.
-* Replace the server IP in the client files with your local IPv4 address if using multiple devices.
-
----
-
-## Concepts Learned
-
-* Socket creation
-* TCP communication
-* bind(), listen(), accept()
-* send() and recv()
-* Client-server architecture
-* Basic networking protocols
+- Basic CLI interface
+- No encryption
+- No persistent chat history
+- Terminal input/output may overlap during simultaneous messaging
+- Limited error handling
 
 ---
 
 ## Future Improvements
 
-* Multi-client support
-* GUI interface
-* Threading for simultaneous messaging
-* Message encryption
-* Internet/global network support
+- GUI version using Tkinter or PyQt
+- Private messaging
+- User authentication
+- Better terminal UI
+- Async I/O implementation
+- File sharing support
+
+---
+
+## Learning Outcomes
+
+This project helped in understanding:
+
+- TCP socket communication
+- Client-server architecture
+- Concurrent programming using threads
+- Shared state management
+- Real-time networking concepts
+- Blocking I/O behavior
+
+---
+
+## Author
+
+Sharan
