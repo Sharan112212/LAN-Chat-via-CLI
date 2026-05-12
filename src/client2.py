@@ -12,5 +12,5 @@ while True:
         print("closing connection")
         c2.close()
         break
-    msg = input("enter your message:\n")
+    msg = input(f"{name}: ")
     c2.send(bytes(msg, 'utf-8'))

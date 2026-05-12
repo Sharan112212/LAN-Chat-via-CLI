@@ -6,7 +6,7 @@ name = input("Enter your name: \n")
 c1.send(bytes(name, 'utf-8'))
 
 while True:
-    msg = input("enter your message:\n")
+    msg = input(f"{name}: ")
     c1.send(bytes(msg, 'utf-8'))
     msg = c1.recv(1024).decode()
     print(msg)
