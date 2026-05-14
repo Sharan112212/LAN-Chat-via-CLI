@@ -5,11 +5,11 @@ import threading
 def receive(c):
     while True:
         msg = c.recv(1024).decode()
-        print(msg)
-        if msg.lower() == "":
+        if not msg:
             print("closing connection")
             c.close()
             break
+        print(msg)
 
 def send(c,name):
     while True:

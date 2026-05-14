@@ -22,6 +22,7 @@ def receive_from_client(c, sender,clients):
         print(f"[{localtime()}] {sender}: {msg}")
         if msg.lower() == "bye" :
             print("closing connection")
+            clients.remove(c)
             c.close()
             break
         for client in clients:
